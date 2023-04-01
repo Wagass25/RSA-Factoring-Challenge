@@ -1,0 +1,30 @@
+#!/usr/bin/python3
+
+import math
+import sys
+
+def factorize(num):
+    """
+    Given a natural number num, return a tuple (p, q) such that p*q=num and p<=q.
+    If no such tuple exists, return None.
+    """
+    for p in range(2, int(math.sqrt(num))+1):
+        if num % p == 0:
+            return (p, num // p)
+    return None
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: factors <file>")
+        sys.exit(1)
+
+    filename = sys.argv[1]
+
+    with open(filename, "r") as f:
+        for line in f:
+            num = int(line.strip())
+            factors = factorize(num)
+            if factors:
+                print(f"{num}={factors[0]}*{factors[1]}")
+            else:
+                print(f"{num} is prime")

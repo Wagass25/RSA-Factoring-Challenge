@@ -1,0 +1,42 @@
+#!/usr/bin/python3
+import math
+import random
+
+def gcd(a, b):
+    """
+    Given two integers a and b, return their greatest common divisor (GCD).
+    """
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+def pollard_rho(num):
+    """
+    Given a prime natural number num, return its prime factorization.
+    """
+    if num <= 1:
+        return []
+    elif num % 2 == 0:
+        return [2] + pollard_rho(num // 2)
+    else:
+        x = random.randint(1, num-1)
+        y = x
+        c = random.randint(1, num-1)
+        d = 1
+
+        while d == 1:
+            x = (x**2 + c) % num
+            y = (y**2 + c) % num
+            y = (y**2 + c) % num
+            d = gcd(abs(x - y), num)
+
+            if d == num:
+                return pollard_rho(num)
+
+        return pollard_rho(d) + pollard_rho(num // d)
+
+if __name__ == "__main__":
+    num = 239809320265259
+    factors = pollard_rho(num)
+    print(f"{num} = {'*'.join(map(str, factors))}")
